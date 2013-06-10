@@ -46,8 +46,8 @@ public class PedidoEncaminhado extends JFrame {
         jTextField5.setEditable(false);
         jTextField6.setEditable(false);
         
-        jComboBox2.addItem("Paulista");
-        jComboBox2.addItem("Consolação");
+        jComboBox2.addItem("PAULISTA");
+        jComboBox2.addItem("CONSOLACÃO");
 
         jButton2.addActionListener(new ActionListener() {
 
