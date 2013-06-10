@@ -41,6 +41,17 @@ public class PaulistaHome extends JFrame {
                 dispose();
             }
         });
+        
+        jButton4.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                EncaminharPedidos rvd = new EncaminharPedidos();
+                rvd.setLocationRelativeTo(null);
+                rvd.setVisible(true);
+                dispose();
+            }
+        });
     }
     
 @SuppressWarnings("unchecked")
