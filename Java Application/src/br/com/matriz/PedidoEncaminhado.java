@@ -64,7 +64,11 @@ public class PedidoEncaminhado extends JFrame {
                 pedAtual = pedido;
                 pedAtual.setStatus_pedido(jComboBox2.getSelectedItem().toString());
                 control.edit(pedAtual);
-
+                JOptionPane.showMessageDialog(null, "Produto saiu para entrega ao cliente");
+                EncaminharPedidos p = new EncaminharPedidos();
+                p.setLocationRelativeTo(null);
+                p.setVisible(true);
+                dispose();
                 
                 
             }
