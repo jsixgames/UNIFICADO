@@ -124,9 +124,6 @@ public class EncaminharPedidos extends JFrame {
              if(lista.get(i).getStatus_pedido().equals("PAGAMENTO CONFIRMADO")){
                  listaOK.add(lista.get(i));
              }
-             if(listaOK.size() == 0){
-                 JOptionPane.showMessageDialog(null, "Não existe pedidos para prosessar no momento");
-             }
              
          }
              
