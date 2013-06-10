@@ -79,7 +79,7 @@ public class PedidoEncaminhado extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                ProdutoMenu p = new ProdutoMenu();
+                EncaminharPedidos p = new EncaminharPedidos();
                 p.setLocationRelativeTo(null);
                 p.setVisible(true);
                 dispose();
