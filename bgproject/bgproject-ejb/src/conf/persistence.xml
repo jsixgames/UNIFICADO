@@ -10,6 +10,10 @@
     <class>br.com.modelos.ListaDesejos</class>
     <class>br.com.modelos.Item_Pedido</class>
     <class>br.com.modelos.Pedido</class>
+    <class>br.com.modelos.EstoqueConsolacao</class>
+    <class>br.com.modelos.EstoquePaulista</class>
+    <class>br.com.modelos.ItensVendaConsolacao</class>
+    <class>br.com.modelos.ItensVendaPaulista</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
