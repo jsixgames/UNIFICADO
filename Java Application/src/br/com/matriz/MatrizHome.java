@@ -42,6 +42,17 @@ public class MatrizHome extends JFrame {
             }
         });
         
+        jButton4.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                EncaminharPedidos p = new EncaminharPedidos();
+                p.setLocationRelativeTo(null);
+                p.setVisible(true);
+                dispose();
+            }
+        });
+        
     }
     
 @SuppressWarnings("unchecked")
