@@ -77,7 +77,7 @@ public class PedidoEncaminhado extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                PaulistaHome p = new PaulistaHome();
+                EncaminharPedidos p = new EncaminharPedidos();
                 p.setLocationRelativeTo(null);
                 p.setVisible(true);
                 dispose();
