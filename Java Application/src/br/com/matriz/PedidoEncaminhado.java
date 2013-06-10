@@ -47,7 +47,7 @@ public class PedidoEncaminhado extends JFrame {
         jTextField6.setEditable(false);
         
         jComboBox2.addItem("PAULISTA");
-        jComboBox2.addItem("CONSOLACÃO");
+        jComboBox2.addItem("CONSOLAÇÃO");
 
         jButton2.addActionListener(new ActionListener() {
 
@@ -64,7 +64,7 @@ public class PedidoEncaminhado extends JFrame {
                 pedAtual = pedido;
                 pedAtual.setStatus_pedido(jComboBox2.getSelectedItem().toString());
                 control.edit(pedAtual);
-                JOptionPane.showMessageDialog(null, "Produto saiu para entrega ao cliente");
+                JOptionPane.showMessageDialog(null, "Produto encaminhado para filial");
                 EncaminharPedidos p = new EncaminharPedidos();
                 p.setLocationRelativeTo(null);
                 p.setVisible(true);
