@@ -39,14 +39,12 @@ public class AlterarDep extends JFrame {
             }
 
         });
-        jLabel1.setVisible(false);
         jTextField4.setEditable(false);
         jButton5.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(jTextField2.getText().isEmpty()){
-                    jLabel1.setVisible(true);
                 }else{
                     jTextField4.setEditable(true);
                     DepartamentoController control = null;
@@ -59,7 +57,6 @@ public class AlterarDep extends JFrame {
                     jTextField4.setText(control.find(index).getNome());
                     jTextField4.repaint();
                     jTextField2.setEditable(false);
-                    jLabel1.setVisible(false);
                 }
                 
                 
@@ -72,8 +69,6 @@ public class AlterarDep extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(jTextField4.getText().isEmpty()){
-                    jLabel1.setText("Necessario informar o novo departamento!");
-                    jLabel1.setVisible(true);
                 }else{
                 
                      DepartamentoController control = null;

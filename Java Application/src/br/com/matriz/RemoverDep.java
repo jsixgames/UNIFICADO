@@ -59,8 +59,7 @@ public class RemoverDep extends JFrame {
                     Object index = jTextField1.getText().toString();
                     if(jTextField1.getText().isEmpty()){
                         jTextField2.setEditable(false);
-                        jLabel2.setText("Necessario um codigo valido para busca");
-                        jLabel2.setVisible(true);
+
                     }
                     else{
                         jTextField2.setText(control.find(index).getNome());
@@ -78,8 +77,7 @@ public class RemoverDep extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(jTextField1.getText().isEmpty()){
-                    jLabel2.setText("Necessario um codigo valido para remoção");
-                    jLabel2.setVisible(true);
+
                 }
                 else{
                 DepartamentoController control = null;

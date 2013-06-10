@@ -26,7 +26,6 @@ public class CadastrarDep extends JFrame {
      */
     public CadastrarDep() {
         initComponents();
-        jLabel1.setVisible(false);
         jButton8.addActionListener(new ActionListener() {
 
             @Override
@@ -44,7 +43,6 @@ public class CadastrarDep extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                  if(jTextField4.getText().isEmpty()){
-                     jLabel1.setVisible(true);
                      repaint();
                  }
                  else {

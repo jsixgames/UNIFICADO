@@ -47,7 +47,6 @@ public class RemoverProd extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(jTextField1.getText().isEmpty()){
-                    jLabel1.setVisible(true);
                 }else{
                         ProdutoController control = null;
                     try {
@@ -72,50 +71,30 @@ public class RemoverProd extends JFrame {
 
         });
         
-        jButton2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                     Produto prd = new Produto();
-                     prd.setId_prod(Long.parseLong(jTextField1.getText()));
-                     ProdutoController control = null;                     
-                    try {
-                        control = new ProdutoController();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CadastrarDep.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                     control.remove(prd);
-                     dispose();
-                     JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
-                     
-                 
-            }
-        });
         
         jButton2.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(jTextField1.getText().isEmpty()){
-                    jLabel5.setText("Favor informar o codigo para exclusao");
-                    jLabel5.setVisible(true);
-                }else{
-                
-                     ProdutoController control = null;
-                    try {
-                        control = new ProdutoController();
-                    } catch (Exception ex) {
-                        Logger.getLogger(AlterarDep.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                     Produto prod = new Produto();
-                     prod.setId_prod(Long.parseLong(jTextField1.getText()));
-                     control.remove(prod);
-                     JOptionPane.showMessageDialog(null, "Produto removido com sucesso!");
-                     ProdutoMenu depM = new ProdutoMenu();
-                     depM.setLocationRelativeTo(null);
-                     depM.setVisible(true);
-                     dispose();
+
+                }
+                else{
+                ProdutoController control = null;
+                try {
+                    control = new ProdutoController();
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoverDep.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Produto dep = new Produto();
+                dep.setId_prod(Long.parseLong(jTextField1.getText()));
+                control.remove(dep);
+                //JOptionPane.showMessageDialog(null, "Produto removida com sucesso!");
+                ProdutoMenu depM = new ProdutoMenu();
+                depM.setLocationRelativeTo(null);
+                depM.setVisible(true);
+                dispose();
+           
                 }
             }
 
