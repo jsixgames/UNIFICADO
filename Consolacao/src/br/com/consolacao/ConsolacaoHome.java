@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 
-public class PaulistaHome extends JFrame {
+public class ConsolacaoHome extends JFrame {
     
-    public PaulistaHome() {
+    public ConsolacaoHome() {
         initComponents();
         jButton1.addActionListener(new ActionListener() {
 
@@ -36,6 +36,17 @@ public class PaulistaHome extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 EstoqueProd rvd = new EstoqueProd();
+                rvd.setLocationRelativeTo(null);
+                rvd.setVisible(true);
+                dispose();
+            }
+        });
+        
+        jButton4.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                EncaminharPedidos rvd = new EncaminharPedidos();
                 rvd.setLocationRelativeTo(null);
                 rvd.setVisible(true);
                 dispose();

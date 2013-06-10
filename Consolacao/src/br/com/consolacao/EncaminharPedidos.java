@@ -4,84 +4,92 @@
  */
 package br.com.consolacao;
 
-import br.com.modelos.EstoqueConsolacao;
-import br.controller.EstoqueConsolacaoController;
-import br.tabelas.TabelaEstoque;
+
+
+import br.com.modelos.Pedido;
+import br.controller.PedidoController;
+import br.tabelas.TabelaPedido;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author Bonato
+ * @author Jeckson
  */
-public class EstoqueProd extends JFrame {
+public class EncaminharPedidos extends JFrame {
     
     private Object bean;
+    private List<Pedido> listaOK = new ArrayList<Pedido>();
+    private Pedido pedido;
 
     /**
      * Creates new customizer CadastrarProd
      */
-    public EstoqueProd() {
+    public EncaminharPedidos() {
         initComponents(); 
-        jButton6.setVisible(false);
-        jTable1.getColumnModel().getColumn(0).setHeaderValue("Código");     
-        jTable1.getColumnModel().getColumn(1).setHeaderValue("Nome");     
-        jTable1.getColumnModel().getColumn(2).setHeaderValue("QTD");     
-        jTable1.getColumnModel().getColumn(3).setHeaderValue("Dep.");     
+        pedido = new Pedido();
+        jButton1.setVisible(false);
+        
+        
+        jButton1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Long id = Long.parseLong(jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString());
+                pedido.setId(id);
+                Date data = (Date) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1);
+                pedido.setData_pedido(data);
+                pedido.setForma_pagamento(jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2).toString());
+                int prazo = Integer.parseInt(jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3).toString());
+                pedido.setPrazo_entrega(prazo);
+                pedido.setStatus_pedido(jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4).toString());
+                double total = Double.parseDouble(jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5).toString());
+                pedido.setTotal_pedido(total);
+                
+                PedidoEncaminhado p = new PedidoEncaminhado(pedido);
+                p.setLocationRelativeTo(null);
+                p.setVisible(true);
+                dispose();
+            }
+
+        });
         
         jButton4.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                ConsolacaoHome ph = new ConsolacaoHome();
-                ph.setLocationRelativeTo(null);
-                ph.setVisible(true);
+                ConsolacaoHome p = new ConsolacaoHome();
+                p.setLocationRelativeTo(null);
+                p.setVisible(true);
                 dispose();
             }
 
         });
         
-        jButton5.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                AdicionarEst ph = new AdicionarEst();
-                ph.setLocationRelativeTo(null);
-                ph.setVisible(true);
-                dispose();
-            }
-
-        });
         
-        jButton6.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                AtualizarEst ph = new AtualizarEst(atualizaProduto());
-                ph.setLocationRelativeTo(null);
-                ph.setVisible(true);
-                dispose();
-            }
-
-        });
-        
-     List<EstoqueConsolacao> lista = listarProdutos();
-        TabelaEstoque tabelaProd = new TabelaEstoque(lista);
+        List<Pedido> lista = listarPedidos();
+        TabelaPedido tabelaProd = new TabelaPedido(lista);
         jTable1.setModel(tabelaProd);
         jTable1.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                jButton6.setVisible(true); 
+                jButton1.setVisible(true); 
+                
+                
+                
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                jButton6.setVisible(true);
+                jButton1.setVisible(true);
             }
 
             @Override
@@ -100,32 +108,29 @@ public class EstoqueProd extends JFrame {
             }
         });
         jTable1.repaint();
+                       
         
     }
     
-    EstoqueConsolacao atualizaProduto(){
-        EstoqueConsolacao prd = new EstoqueConsolacao();
-        String id = jTable1.getModel().getValueAt(jTable1.getSelectedRow() ,0).toString();
-        prd.setId(Long.parseLong(id));
-        prd.setNomeProd(jTable1.getModel().getValueAt(jTable1.getSelectedRow() ,1).toString());
-        String pre = jTable1.getModel().getValueAt(jTable1.getSelectedRow() ,2).toString();
-        prd.setPrecoProd(Double.parseDouble(pre));
-        prd.setCategProd(jTable1.getModel().getValueAt(jTable1.getSelectedRow() ,3).toString());
-        String qtd = jTable1.getModel().getValueAt(jTable1.getSelectedRow() ,4).toString();
-        prd.setQtd(Integer.parseInt(qtd));      
-        return prd;
-    }
-    
-    List<EstoqueConsolacao> listarProdutos(){
-           EstoqueConsolacaoController control = null;
+    List<Pedido> listarPedidos(){
+           PedidoController control = null;
          try {
-            control = new EstoqueConsolacaoController();
+            control = new PedidoController();
          } catch (Exception ex) {
+             
          }
-             List<EstoqueConsolacao> lista = control.findAll();
-         return lista;
+         List<Pedido> lista = control.findAll();
+         for(int i = 0; i < lista.size();i++){
+             if(lista.get(i).getStatus_pedido().equalsIgnoreCase("CONSOLAÇÃO")){
+                 listaOK.add(lista.get(i));
+             }
+             
+         }
+             
+         return listaOK;
 
         }
+    
     
     @SuppressWarnings("unchecked")
     
@@ -150,8 +155,7 @@ public class EstoqueProd extends JFrame {
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BOXGAMES - APP DESKTOP - RELATÓRIO DE PRODUTOS");
@@ -168,7 +172,7 @@ public class EstoqueProd extends JFrame {
 
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 28)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Estoque");
+        jLabel2.setText("Encaminhar Pedidos");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel4.add(jLabel2);
         jPanel4.add(jPanel5);
@@ -188,36 +192,12 @@ public class EstoqueProd extends JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "Plataforma", "Preço", "Quantidade"
+                "Id", "Depto", "Nome", "Preço", "QTD"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(80);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(280);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+        ));
         jScrollPane2.setViewportView(jTable1);
 
-        jButton5.setText("Adicionar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("Atualizar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
+        jButton1.setText("Encaminhar Pedido");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -228,9 +208,8 @@ public class EstoqueProd extends JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -241,10 +220,9 @@ public class EstoqueProd extends JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -274,22 +252,13 @@ public class EstoqueProd extends JFrame {
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

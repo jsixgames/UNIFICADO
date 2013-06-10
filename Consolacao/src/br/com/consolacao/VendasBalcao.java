@@ -41,7 +41,7 @@ public class VendasBalcao extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 ListaDeItensVenda.iniciaLista();
-                PaulistaHome ph = new PaulistaHome();
+                ConsolacaoHome ph = new ConsolacaoHome();
                 ph.setLocationRelativeTo(null);
                 ph.setVisible(true);
                 dispose();
@@ -81,7 +81,7 @@ public class VendasBalcao extends JFrame {
                         ListaDeItensVenda.iniciaLista();
                     }
                     JOptionPane.showMessageDialog(null, "Venda efetuada com sucesso!");
-                    PaulistaHome ph = new PaulistaHome();
+                    ConsolacaoHome ph = new ConsolacaoHome();
                     ph.setLocationRelativeTo(null);
                     ph.setVisible(true);
                     dispose();

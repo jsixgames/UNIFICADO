@@ -9,7 +9,7 @@ public class Main {
         
         
         
-         PaulistaHome p = new PaulistaHome();
+         ConsolacaoHome p = new ConsolacaoHome();
          p.setLocationRelativeTo(null);
          p.setVisible(true);
         

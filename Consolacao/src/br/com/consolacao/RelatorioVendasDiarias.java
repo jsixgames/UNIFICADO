@@ -4,9 +4,18 @@
  */
 package br.com.consolacao;
 
+import br.com.modelos.ItensVendaConsolacao;
+import br.controller.ItensVendaController;
+import br.tabelas.TabelaItensVendas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,22 +24,19 @@ import javax.swing.JFrame;
 public class RelatorioVendasDiarias extends JFrame {
     
     private Object bean;
+    private Date data;
 
     /**
      * Creates new customizer CadastrarProd
      */
     public RelatorioVendasDiarias() {
-        initComponents(); 
-        jTable1.getColumnModel().getColumn(0).setHeaderValue("Código");     
-        jTable1.getColumnModel().getColumn(1).setHeaderValue("Nome");     
-        jTable1.getColumnModel().getColumn(2).setHeaderValue("QTD");     
-        jTable1.getColumnModel().getColumn(3).setHeaderValue("Dep.");     
+        initComponents();   
         
         jButton4.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                PaulistaHome ph = new PaulistaHome();
+                ConsolacaoHome ph = new ConsolacaoHome();
                 ph.setLocationRelativeTo(null);
                 ph.setVisible(true);
                 dispose();
@@ -38,6 +44,58 @@ public class RelatorioVendasDiarias extends JFrame {
 
         });
         
+        jButton5.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                try{
+                   int dia = Integer.parseInt(jTextField1.getText().substring(0,2));
+                   int mes = Integer.parseInt(jTextField1.getText().substring(3,5));
+                   int ano = Integer.parseInt(jTextField1.getText().substring(6,10));
+                   data = new Date(ano, mes, dia);
+               }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, "Data invalida favor digite uma data valida!");
+               }
+               List<ItensVendaConsolacao> lista = relatorioVendas(data);
+               TabelaItensVendas tabelaProd = new TabelaItensVendas(lista);
+               jTable1.setModel(tabelaProd);
+               jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
+               jTable1.getColumnModel().getColumn(1).setPreferredWidth(180);
+               jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
+               jTable1.getColumnModel().getColumn(3).setPreferredWidth(40);
+               jTable1.getColumnModel().getColumn(4).setPreferredWidth(60);
+               jTable1.getColumnModel().getColumn(5).setPreferredWidth(60);
+               repaint();;
+               
+            }
+
+        });
+        
+        
+    }
+    
+    public static List<ItensVendaConsolacao> relatorioVendas(Date data){
+         List<ItensVendaConsolacao> listaOk = new ArrayList<ItensVendaConsolacao>();
+        ItensVendaController control = null;
+        try {
+            control = new ItensVendaController();
+        } catch (Exception ex) {
+            Logger.getLogger(RelatorioVendasDiarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<ItensVendaConsolacao> lista = control.findAll();
+        for(int i = 0;i < lista.size();i++){
+           if((lista.get(i).getDataVenda().getYear()+1900) == data.getYear() &&
+               (lista.get(i).getDataVenda().getMonth()+1) == data.getMonth()&&
+               lista.get(i).getDataVenda().getDate() == data.getDate()){
+                listaOk.add(lista.get(i));
+            }
+        }
+        if(listaOk.size() == 0){
+            JOptionPane.showMessageDialog(null, "Não temos itens vendidos para está data");
+        }
+        
+        return listaOk;
     }
     
     @SuppressWarnings("unchecked")
@@ -63,9 +121,15 @@ public class RelatorioVendasDiarias extends JFrame {
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jComboBox2 = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter data= new javax.swing.text.MaskFormatter("**/**/****"); 
+            jTextField1 = new javax.swing.JFormattedTextField(data); 
+        } 
+        catch (Exception e){ 
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BOXGAMES - APP DESKTOP - RELATÓRIO DE PRODUTOS");
@@ -96,15 +160,23 @@ public class RelatorioVendasDiarias extends JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Nome", "Preço Prod", "QTD", "Preço final", "Data Venda"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(80);
         jTable1.getColumnModel().getColumn(1).setPreferredWidth(280);
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -128,13 +200,11 @@ public class RelatorioVendasDiarias extends JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jLabel1.setText("Data:");
@@ -146,21 +216,23 @@ public class RelatorioVendasDiarias extends JFrame {
             }
         });
 
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jTextField1.setToolTipText("   /    / ");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)))
                 .addGap(0, 10, Short.MAX_VALUE))
@@ -170,12 +242,20 @@ public class RelatorioVendasDiarias extends JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)))
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
@@ -196,7 +276,6 @@ public class RelatorioVendasDiarias extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -206,5 +285,6 @@ public class RelatorioVendasDiarias extends JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
