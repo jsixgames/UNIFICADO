@@ -92,7 +92,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Trebuchet MS" size="28" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="BOXGAMES - UNIDADE PAULISTA"/>
+                <Property name="text" type="java.lang.String" value="BOXGAMES - UNIDADE CONSOLA&#xc7;AO"/>
                 <Property name="verticalAlignment" type="int" value="3"/>
               </Properties>
             </Component>

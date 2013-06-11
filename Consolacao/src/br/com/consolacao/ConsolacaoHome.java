@@ -82,7 +82,7 @@ public class ConsolacaoHome extends JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(580, 450));
 
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 28)); // NOI18N
-        jLabel2.setText("BOXGAMES - UNIDADE PAULISTA");
+        jLabel2.setText("BOXGAMES - UNIDADE CONSOLAÇAO");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel2.add(jLabel2);
 
