@@ -30,6 +30,9 @@ public class AdicionarEst extends JFrame {
      */
     public AdicionarEst() {
         initComponents();
+        jTextField11.setEditable(false);
+        jTextField13.setEditable(false);
+        jTextField14.setEditable(false);
         jButton17.addActionListener(new ActionListener() {
 
             @Override
