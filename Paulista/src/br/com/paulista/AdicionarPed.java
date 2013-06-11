@@ -79,9 +79,7 @@ public class AdicionarPed extends JFrame {
                         ven.setVisible(true);
                         dispose();
                     }else{
-                        
-                        jTextField11.setEditable(true);
-                        jTextField13.setEditable(true);
+
                         jSpinner1.setEnabled(true);
                         jTextField11.setText(est.getNomeProd());
                         jTextField13.setText(String.valueOf(est.getPrecoProd()));
